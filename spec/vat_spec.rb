@@ -41,14 +41,26 @@ describe Apilayer::Vat do
     end
   end
 
-  describe :rate_by_country_code do
-    it "returns a Hash with VAT rate for the specified country" do
-      VCR.use_cassette("vat/rate_by_country_code") do
-        api_resp = Apilayer::Vat.rate_by_country_code("NL")
-        expect(api_resp['standard_rate']).to be_a Numeric
-        expect(api_resp['reduced_rates']).to be_a Hash
+  describe :rate do
+    context "country_code provided as criteria" do
+      it "returns a Hash with VAT rate for the specified country" do
+        VCR.use_cassette("vat/rate_by_country_code") do
+          api_resp = Apilayer::Vat.rate(:country_code, "NL")
+          expect(api_resp['standard_rate']).to be_a Numeric
+          expect(api_resp['reduced_rates']).to be_a Hash
+        end
       end
     end
+
+    context "ip_address provided as criteria" do
+      it "returns a Hash with VAT rate for the specified country" do
+        VCR.use_cassette("vat/rate_by_ip_address") do
+          api_resp = Apilayer::Vat.rate(:ip_address, "176.249.153.36")
+          expect(api_resp['standard_rate']).to be_a Numeric
+          expect(api_resp['reduced_rates']).to be_a Hash
+        end
+      end
+    end    
   end
 
 
