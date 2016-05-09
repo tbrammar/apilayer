@@ -19,7 +19,7 @@ module Apilayer
       JSON.parse(resp.body)
     end
 
-    def self.historical(date, currencies)
+    def self.historical(date, *currencies)
       resp = connection.get do |req|
         req.url 'api/historical' 
         req.params['date'] = date
