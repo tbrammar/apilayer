@@ -27,3 +27,4 @@ end
 
 require "apilayer/currency"
 require "apilayer/vat"
+require "apilayer/error"

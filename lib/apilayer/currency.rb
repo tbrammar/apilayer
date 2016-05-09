@@ -4,9 +4,10 @@ module Apilayer
 
     def self.connection
       if Apilayer.configs[:currency_key].nil?
-        raise "Please configure access_key for currency_layer"
+        raise Apilayer::Error.new "Please configure access_key for currency_layer first!"
       else
-        @connection ||= ::Faraday.new(:url => 'http://apilayer.net', :params => {"access_key" => Apilayer.configs[:currency_key]})
+        @connection ||= ::Faraday.new(:url => 'http://apilayer.net', 
+                                      :params => {"access_key" => Apilayer.configs[:currency_key]})
       end
     end
 
