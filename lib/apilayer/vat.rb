@@ -17,5 +17,32 @@ module Apilayer
       end
       JSON.parse(resp.body)
     end
+
+    def self.rate_by_country_code(country_code)
+      resp = connection.get do |req|
+        req.url 'api/rate'
+        req.params['country_code'] = country_code
+      end
+      JSON.parse(resp.body)
+    end
+
+    def self.rate_list
+      resp = connection.get do |req|
+        req.url 'api/rate_list'
+      end
+      JSON.parse(resp.body)
+    end
+
+    def self.price(price, criteria, value)
+      unless [:country_code, :ip_address].include? criteria
+        raise Apilayer::Error.new("You must provide either :country_code or :ip_address")
+      end
+      resp = connection.get do |req|
+        req.url 'api/price'
+        req.params['amount'] = price
+        req.params[criteria.to_s] = value
+      end
+      JSON.parse(resp.body)
+    end
   end
 end
