@@ -39,6 +39,15 @@ describe Apilayer::Vat do
         expect(api_resp["company_name"]).to eq "AMAZON EUROPE CORE S.A R.L."
       end
     end
+
+    it "passes vat_number to get_and_parse_request" do
+      VCR.use_cassette("vat/validation") do
+        expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+          "validate", {:vat_number => "LU26375245"}
+        )
+        Apilayer::Vat.validate("LU26375245")
+      end      
+    end
   end
 
   describe :rate do
@@ -50,6 +59,15 @@ describe Apilayer::Vat do
           expect(api_resp['reduced_rates']).to be_a Hash
         end
       end
+
+      it "passes country_code to get_and_parse_request" do
+        VCR.use_cassette("vat/validation") do
+          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+            "rate", {:country_code => "NL"}
+          )
+          Apilayer::Vat.rate(:country_code, "NL")
+        end      
+      end      
     end
 
     context "ip_address provided as criteria" do
@@ -58,6 +76,15 @@ describe Apilayer::Vat do
           api_resp = Apilayer::Vat.rate(:ip_address, "176.249.153.36")
           expect(api_resp['standard_rate']).to be_a Numeric
           expect(api_resp['reduced_rates']).to be_a Hash
+        end
+      end
+
+      it "passes ip_address to get_and_parse_request" do
+        VCR.use_cassette("vat/rate_by_ip_address") do
+          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+            "rate", {:ip_address => "176.249.153.36"}
+          )
+          Apilayer::Vat.rate(:ip_address, "176.249.153.36")
         end
       end
     end    
@@ -70,6 +97,13 @@ describe Apilayer::Vat do
         expect(api_resp["rates"].count).to eq 28
       end
     end
+
+    it "invokes get_and_parse_request" do
+      VCR.use_cassette("vat/rate_list") do
+        expect(Apilayer::Vat).to receive(:get_and_parse_request).with("rate_list")
+        Apilayer::Vat.rate_list
+      end
+    end  
   end
 
   describe :price do
@@ -92,6 +126,16 @@ describe Apilayer::Vat do
           expect(api_resp["vat_rate"]).to eq 21
         end
       end
+
+      it "invokes get_and_parse_request with country_code" do
+        VCR.use_cassette("vat/price_by_country_code") do
+          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+            "price",
+            hash_including(:amount => 100, :country_code => "NL")
+          )
+          Apilayer::Vat.price(100, :country_code, "NL")
+        end
+      end
     end
 
     context "calculation based on ip_address" do
@@ -104,7 +148,19 @@ describe Apilayer::Vat do
           expect(api_resp["vat_rate"]).to eq 20   
         end
       end
+
+      it "invokes get_and_parse_request with ip_address" do
+        VCR.use_cassette("vat/price_by_ip_address") do
+          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+            "price",
+            hash_including(:amount => 100, :ip_address => "176.249.153.36")
+          )
+          Apilayer::Vat.price(100, :ip_address, "176.249.153.36")
+        end
+      end
+
     end
   end
+
 end
 

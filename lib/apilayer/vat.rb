@@ -27,7 +27,7 @@ module Apilayer
 
     def self.rate(criteria, value)
       validate_country_criteria(criteria)
-      params = {criteria.to_s => value}
+      params = {criteria.to_sym => value}
       get_and_parse_request("rate", params)
     end
 
@@ -37,7 +37,7 @@ module Apilayer
 
     def self.price(price, criteria, value)
       validate_country_criteria(criteria)
-      params = {:amount => price, criteria.to_s => value}
+      params = {:amount => price, criteria.to_sym => value}
       get_and_parse_request("price", params)
     end
 
