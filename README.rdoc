@@ -1,0 +1,64 @@
+== apilayer {<img src="https://secure.travis-ci.org/actfong/apilayer.png"/>}[http://travis-ci.org/actfong/apilayer] {<img src="https://codeclimate.com/github/actfong/apilayer.png"/>}[https://codeclimate.com/github/actfong/apilayer]
+
+Ruby wrapper for various services of apilayer.
+See http://apilayer.com for more details.
+
+=== Version 1.0
+For this version, only the API-features that are available to the free accounts are supported. See the documentation of http://currencylayer.com and http://vatlayer.com for more details.
+
+=== Installation
+
+==== Using Bundler
+
+Add apilayer in your <tt>Gemfile</tt>:
+
+  gem "apilayer"
+
+Run the following in your console:
+
+  $ bundle install
+  
+=== Usage
+
+==== Set up Apilayer
+Once you sign up for a service of *apilayer*, you will receive an access_key. Please pay attention that different services of apilayer (such as *vatlayer* and *currencylayer*) have different access keys.
+
+Then you can use your access_key(s) to configure your Apilayer module like this:
+
+  Apilayer.configure do |configs|
+    configs.vat_key = "my_vatlayer_access_key_123"
+    configs.currency_key = "my_currencylayer_access_key_123"
+  end
+
+Please note that you don't need to assign keys for both services. You only need to assign the key for the service you have signed up for.
+
+Once that is done, you are ready to go
+
+==== currencylayer
+After setting the access_key for *currencylayer*, you can use Apilayer::Currency to call *currencylayer*'s API
+  Apilayer::Currency.live
+  Apilayer::Currency.live("EUR", "GBP", "CHF")
+  
+  Apilayer::Currency.historical("2016-01-01")
+  Apilayer::Currency.historical("2016-01-01", "EUR", "GBP", "CHF")
+
+==== vatlayer
+
+After setting the access_key for *vatlayer*, you can use Apilayer::Vat to call *vatlayer*'s API
+
+  Apilayer::Vat.validate("LU26375245")
+  Apilayer::Vat.rate(:country_code, "NL")
+  Apilayer::Vat.rate(:ip_address, "176.249.153.36")
+  Apilayer::Vat.rate_list
+  Apilayer::Vat.price(100, :country, "NL")
+  Apilayer::Vat.price(100, :ip_address, "176.249.153.36")
+  
+==== Re-Configure Apilayer's access_keys
+If you happened to have forgotten to provide an access_key or entered an incorrect one, you can re-configure your Apilayer module by:
+
+  # Example: reconfigure access_key for vatlayer
+  Apilayer::Vatlayer.reset_connection
+  Apilayer.configure do |configs|
+    configs.vat_key = "my_valid_key_123"
+  end
+  
