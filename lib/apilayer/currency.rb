@@ -2,8 +2,6 @@ module Apilayer
   module Currency
     extend ConnectionHelper
 
-    CURRENCYLAYER_KEY_MISSING_MSG = "Please configure access_key for currency_layer first!"
-
     def self.connection
       @connection ||= ::Faraday.new(:url => 'http://apilayer.net', 
                                     :params => {"access_key" => Apilayer.configs[:currency_key]})

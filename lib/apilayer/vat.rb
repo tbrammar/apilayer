@@ -3,7 +3,6 @@ module Apilayer
     extend ConnectionHelper
 
     COUNTRY_CRITERIA_MISSING_MSG = "You must provide either :country_code or :ip_address"
-    VATLAYER_KEY_MISSING_MSG = "Please configure access_key for vat_layer first!"
 
     def self.connection
       @connection ||= ::Faraday.new(:url => 'http://apilayer.net',
