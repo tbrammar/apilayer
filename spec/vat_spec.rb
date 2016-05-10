@@ -5,25 +5,14 @@ describe Apilayer::Vat do
     Apilayer.configure do |configs|
       configs.vat_key = "vat_layer_key123"
     end
+    Apilayer::Vat.reset_connection
   end
 
   describe :connection do
-    context "vat_layer access_key has not been set" do
-      before do
-        Apilayer.reset!
-      end
-
-      it "raises an error" do
-        expect{Apilayer::Vat.connection}.to raise_error(
-          Apilayer::Error,
-          "Please configure access_key for vat_layer first!"
-        )
-      end
-    end
-
     context "vat_layer access_key has been set" do
       it "returns a connection with correct attributes" do
         conn = Apilayer::Vat.connection
+
         expect(conn).to be_a Faraday::Connection
         expect(conn.url_prefix.host).to match "apilayer.net"
         expect(conn.params["access_key"]).to eq "vat_layer_key123"

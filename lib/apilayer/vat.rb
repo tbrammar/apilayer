@@ -6,12 +6,8 @@ module Apilayer
     VATLAYER_KEY_MISSING_MSG = "Please configure access_key for vat_layer first!"
 
     def self.connection
-      if Apilayer.configs[:vat_key].nil?
-        raise Apilayer::Error.new VATLAYER_KEY_MISSING_MSG
-      else
-        @connection ||= ::Faraday.new(:url => 'http://apilayer.net',
-                                      :params => {"access_key" => Apilayer.configs[:vat_key]})
-      end
+      @connection ||= ::Faraday.new(:url => 'http://apilayer.net',
+                                    :params => {"access_key" => Apilayer.configs[:vat_key]})
     end
 
     def self.validate_country_criteria(criteria)

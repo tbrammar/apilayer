@@ -1,0 +1,39 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://apilayer.net/api/validate?access_key&vat_number=LU26375245
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 10 May 2016 10:55:22 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Powered-By:
+      - PHP/5.5.9-1ubuntu4.14
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Length:
+      - '162'
+      Content-Type:
+      - application/json; Charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: '{"success":false,"error":{"code":101,"type":"missing_access_key","info":"You
+        have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]"}}'
+    http_version: 
+  recorded_at: Tue, 10 May 2016 10:54:40 GMT
+recorded_with: VCR 3.0.1

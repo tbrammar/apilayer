@@ -5,12 +5,8 @@ module Apilayer
     CURRENCYLAYER_KEY_MISSING_MSG = "Please configure access_key for currency_layer first!"
 
     def self.connection
-      if Apilayer.configs[:currency_key].nil?
-        raise Apilayer::Error.new "Please configure access_key for currency_layer first!"
-      else
-        @connection ||= ::Faraday.new(:url => 'http://apilayer.net', 
-                                      :params => {"access_key" => Apilayer.configs[:currency_key]})
-      end
+      @connection ||= ::Faraday.new(:url => 'http://apilayer.net', 
+                                    :params => {"access_key" => Apilayer.configs[:currency_key]})
     end
 
     def self.live(*currencies)
