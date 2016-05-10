@@ -63,7 +63,6 @@ describe Apilayer::Vat do
     end    
   end
 
-
   describe :rate_list do
     it "returns VAT rates for all 28 EU countries" do
       VCR.use_cassette("vat/rate_list") do

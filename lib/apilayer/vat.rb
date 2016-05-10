@@ -1,5 +1,6 @@
 module Apilayer
   module Vat
+    extend ConnectionHelper
 
     COUNTRY_CRITERIA_MISSING_MSG = "You must provide either :country_code or :ip_address"
     VATLAYER_KEY_MISSING_MSG = "Please configure access_key for vat_layer first!"
@@ -20,37 +21,24 @@ module Apilayer
     end
 
     def self.validate(vat_number)
-      resp = connection.get do |req|
-        req.url 'api/validate'
-        req.params['vat_number'] = vat_number
-      end
-      JSON.parse(resp.body)
+      params = {:vat_number => vat_number}
+      get_and_parse_request("validate", params)
     end
 
     def self.rate(criteria, value)
       validate_country_criteria(criteria)
-      resp = connection.get do |req|
-        req.url 'api/rate'
-        req.params[criteria.to_s] = value
-      end
-      JSON.parse(resp.body)
+      params = {criteria.to_s => value}
+      get_and_parse_request("rate", params)
     end
 
     def self.rate_list
-      resp = connection.get do |req|
-        req.url 'api/rate_list'
-      end
-      JSON.parse(resp.body)
+      get_and_parse_request("rate_list")
     end
 
     def self.price(price, criteria, value)
       validate_country_criteria(criteria)
-      resp = connection.get do |req|
-        req.url 'api/price'
-        req.params['amount'] = price
-        req.params[criteria.to_s] = value
-      end
-      JSON.parse(resp.body)
+      params = {:amount => price, criteria.to_s => value}
+      get_and_parse_request("price", params)
     end
 
   end

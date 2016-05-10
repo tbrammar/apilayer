@@ -1,5 +1,6 @@
 module Apilayer
   module Currency
+    extend ConnectionHelper
 
     CURRENCYLAYER_KEY_MISSING_MSG = "Please configure access_key for currency_layer first!"
 
@@ -13,31 +14,25 @@ module Apilayer
     end
 
     def self.live(*currencies)
-      resp = connection.get do |req|
-        req.url 'api/live' 
-        req.params['currencies'] = currencies.map(&:strip).join(",")
-      end
-      JSON.parse(resp.body)
+      currencies_str = join_by_commas(currencies)
+      params = {:currencies => currencies_str}
+      get_and_parse_request("live", params)
     end
 
-    def self.historical(date, *currencies)
-      resp = connection.get do |req|
-        req.url 'api/historical' 
-        req.params['date'] = date
-        req.params['currencies'] = currencies.map(&:strip).join(",") if currencies.any?
-      end
-      JSON.parse(resp.body)
+    def self.historical(date, *currencies)      
+      params = {:date => date}
+      params.merge!(:currencies => join_by_commas(currencies)) if currencies.any?
+      get_and_parse_request("historical", params)
     end
 
     def self.convert(from, to, amount, date=nil)
-      resp = connection.get do |req|
-        req.url 'api/convert' # static
-        req.params['from'] = from
-        req.params['to'] = to
-        req.params['amount'] = amount
-        req.params['date'] = date if date
-      end
-      JSON.parse(resp.body)
+      params = {:from => from, :to => to, :amount => amount}
+      params.merge!(:date => date) if date
+      get_and_parse_request("convert", params)
+    end
+
+    def self.join_by_commas(currencies)
+      currencies.map(&:strip).join(",")
     end
 
   end

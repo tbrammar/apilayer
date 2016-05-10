@@ -25,6 +25,7 @@ module Apilayer
   end
 end
 
+require "apilayer/connection_helper"
 require "apilayer/currency"
 require "apilayer/vat"
 require "apilayer/error"
