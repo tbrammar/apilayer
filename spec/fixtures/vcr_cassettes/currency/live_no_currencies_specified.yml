@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://apilayer.net/api/live?access_key=currency_layer_key123&currencies=
+    uri: http://apilayer.net/api/live?access_key=currency_layer_key123
     body:
       encoding: US-ASCII
       string: ''

@@ -104,7 +104,7 @@ describe Apilayer::Vat do
           expect(api_resp["vat_rate"]).to eq 20   
         end
       end
-  end
+    end
   end
 end
 

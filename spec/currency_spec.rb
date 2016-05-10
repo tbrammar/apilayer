@@ -43,6 +43,13 @@ describe Apilayer::Currency do
           expect(api_resp["quotes"]["USDAED"]).to eq 3.67295
         end      
       end
+
+      it "invokes get_and_parse_request without currencies" do
+        VCR.use_cassette("currency/live_no_currencies_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse_request).with("live")
+          api_resp = Apilayer::Currency.live
+        end
+      end
     end
 
     context "currencies specified with argument" do
@@ -55,6 +62,15 @@ describe Apilayer::Currency do
           expect(api_resp["quotes"]).to include "USDEUR"
           expect(api_resp["quotes"]).to include "USDGBP"
           expect(api_resp["quotes"]).to include "USDCHF"          
+        end
+      end
+
+      it "invokes get_and_parse_request with currencies" do
+        VCR.use_cassette("currency/live_with_currencies_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
+            "live", {:currencies => "EUR,GBP,CHF"}
+          )
+          api_resp = Apilayer::Currency.live("EUR", "GBP", "CHF")
         end
       end
     end
@@ -70,6 +86,13 @@ describe Apilayer::Currency do
           expect(api_resp["quotes"].size).to eq 168
         end    
       end
+
+      it "invokes get_and_parse_request without currencies" do
+        VCR.use_cassette("currency/historical_no_currency_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse_request).with("historical", {:date => "2016-05-06"})
+          api_resp = Apilayer::Currency.historical("2016-05-06")
+        end    
+      end
     end
 
     context "currencies specified as second argument" do
@@ -82,6 +105,15 @@ describe Apilayer::Currency do
           expect(api_resp["quotes"]).to include "USDEUR"
           expect(api_resp["quotes"]).to include "USDGBP"
           expect(api_resp["quotes"]).to include "USDCHF"
+        end
+      end
+
+      it "invokes get_and_parse_request with currencies in params-hash" do
+        VCR.use_cassette("currency/historical_with_specified_currencies") do
+          expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
+            "historical", hash_including(:date => "2016-05-06", :currencies => "EUR,GBP,CHF") 
+          )
+          api_resp = Apilayer::Currency.historical("2016-05-06", "EUR", "GBP", "CHF" )
         end
       end
     end
