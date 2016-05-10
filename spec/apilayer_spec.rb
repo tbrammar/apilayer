@@ -15,9 +15,9 @@ describe Apilayer do
     end
   end
 
-  describe :reset do
+  describe :reset! do
     it "returns an empty @configs" do
-      Apilayer.reset
+      Apilayer.reset!
       expect(Apilayer.instance_variable_get(:@configs).currency_key).to be_nil
       expect(Apilayer.instance_variable_get(:@configs).vat_key).to be_nil
     end

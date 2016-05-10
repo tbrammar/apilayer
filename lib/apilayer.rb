@@ -16,7 +16,7 @@ module Apilayer
     @configs ||= init_configs
   end
 
-  def self.reset
+  def self.reset!
     @configs = init_configs
   end
 

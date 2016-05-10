@@ -10,7 +10,7 @@ describe Apilayer::Currency do
   describe :connection do
     context "currency_layer access_key has not been set" do
       it "raises an error" do
-        Apilayer.reset
+        Apilayer.reset!
 
         expect{Apilayer::Currency.connection}.to raise_error(
           Apilayer::Error,

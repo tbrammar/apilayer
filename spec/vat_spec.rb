@@ -10,7 +10,7 @@ describe Apilayer::Vat do
   describe :connection do
     context "vat_layer access_key has not been set" do
       before do
-        Apilayer.reset
+        Apilayer.reset!
       end
 
       it "raises an error" do
