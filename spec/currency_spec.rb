@@ -56,11 +56,22 @@ describe Apilayer::Currency do
       end
 
       it "invokes get_and_parse with currencies" do
-        VCR.use_cassette("currency/live_with_currencies_specified") do
+        VCR.use_cassette("currency/live_with_valid_currencies_specified") do
           expect(Apilayer::Currency).to receive(:get_and_parse).with(
             "live", {:currencies => "EUR,GBP,CHF"}
           )
           Apilayer::Currency.live("EUR", "GBP", "CHF")
+        end
+      end
+
+      context "invalid currency-codes provided" do
+        it "raises an error" do
+          VCR.use_cassette("currency/live_with_invalid_currencies_specified") do
+            expect{Apilayer::Currency.live("QQQ")}.to raise_error(
+              Apilayer::Error,
+              "You have provided one or more invalid Currency Codes. [Required format: currencies=EUR,USD,GBP,...]"
+            )
+          end
         end
       end
     end
