@@ -1,6 +1,7 @@
 module Apilayer
-
   module Currency
+
+    CURRENCYLAYER_KEY_MISSING_MSG = "Please configure access_key for currency_layer first!"
 
     def self.connection
       if Apilayer.configs[:currency_key].nil?
@@ -38,5 +39,6 @@ module Apilayer
       end
       JSON.parse(resp.body)
     end
+
   end
 end
