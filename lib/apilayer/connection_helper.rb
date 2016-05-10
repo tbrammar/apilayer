@@ -22,15 +22,17 @@ module Apilayer
 
     def parse_response(resp)
       body = JSON.parse(resp.body)
-
-      # Damn it apilayer! Why an exception for vat#validation response? valid instead of success like everywhere else!
-      if body["success"] || body["valid"]
-        return body
-      else
+      # According to documentation, currencylayer has a "success" field 
+      # while vatlayer has a "valid" field to indicate whether the request was succesful or not.
+      # However, for both layers, an unsuccesful request would contain an "error" field.
+      # That's why the presence of "error" is chosen to determine whether we should raise an error or not.
+      if body['error']
         raise Apilayer::Error.new(
           body['error']['info'],
           body['error']['code']
         )
+      else
+        body
       end      
     end
   end
