@@ -47,7 +47,7 @@ describe Apilayer::Currency do
       it "invokes get_and_parse_request without currencies" do
         VCR.use_cassette("currency/live_no_currencies_specified") do
           expect(Apilayer::Currency).to receive(:get_and_parse_request).with("live")
-          api_resp = Apilayer::Currency.live
+          Apilayer::Currency.live
         end
       end
     end
@@ -70,7 +70,7 @@ describe Apilayer::Currency do
           expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
             "live", {:currencies => "EUR,GBP,CHF"}
           )
-          api_resp = Apilayer::Currency.live("EUR", "GBP", "CHF")
+          Apilayer::Currency.live("EUR", "GBP", "CHF")
         end
       end
     end
@@ -90,7 +90,7 @@ describe Apilayer::Currency do
       it "invokes get_and_parse_request without currencies" do
         VCR.use_cassette("currency/historical_no_currency_specified") do
           expect(Apilayer::Currency).to receive(:get_and_parse_request).with("historical", {:date => "2016-05-06"})
-          api_resp = Apilayer::Currency.historical("2016-05-06")
+          Apilayer::Currency.historical("2016-05-06")
         end    
       end
     end
@@ -113,7 +113,7 @@ describe Apilayer::Currency do
           expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
             "historical", hash_including(:date => "2016-05-06", :currencies => "EUR,GBP,CHF") 
           )
-          api_resp = Apilayer::Currency.historical("2016-05-06", "EUR", "GBP", "CHF" )
+          Apilayer::Currency.historical("2016-05-06", "EUR", "GBP", "CHF" )
         end
       end
     end
