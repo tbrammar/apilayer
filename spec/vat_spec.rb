@@ -40,9 +40,9 @@ describe Apilayer::Vat do
       end
     end
 
-    it "passes vat_number to get_and_parse_request" do
+    it "passes vat_number to get_and_parse" do
       VCR.use_cassette("vat/validation") do
-        expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+        expect(Apilayer::Vat).to receive(:get_and_parse).with(
           "validate", {:vat_number => "LU26375245"}
         )
         Apilayer::Vat.validate("LU26375245")
@@ -60,9 +60,9 @@ describe Apilayer::Vat do
         end
       end
 
-      it "passes country_code to get_and_parse_request" do
+      it "passes country_code to get_and_parse" do
         VCR.use_cassette("vat/validation") do
-          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Vat).to receive(:get_and_parse).with(
             "rate", {:country_code => "NL"}
           )
           Apilayer::Vat.rate(:country_code, "NL")
@@ -79,9 +79,9 @@ describe Apilayer::Vat do
         end
       end
 
-      it "passes ip_address to get_and_parse_request" do
+      it "passes ip_address to get_and_parse" do
         VCR.use_cassette("vat/rate_by_ip_address") do
-          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Vat).to receive(:get_and_parse).with(
             "rate", {:ip_address => "176.249.153.36"}
           )
           Apilayer::Vat.rate(:ip_address, "176.249.153.36")
@@ -98,9 +98,9 @@ describe Apilayer::Vat do
       end
     end
 
-    it "invokes get_and_parse_request" do
+    it "invokes get_and_parse" do
       VCR.use_cassette("vat/rate_list") do
-        expect(Apilayer::Vat).to receive(:get_and_parse_request).with("rate_list")
+        expect(Apilayer::Vat).to receive(:get_and_parse).with("rate_list")
         Apilayer::Vat.rate_list
       end
     end  
@@ -127,9 +127,9 @@ describe Apilayer::Vat do
         end
       end
 
-      it "invokes get_and_parse_request with country_code" do
+      it "invokes get_and_parse with country_code" do
         VCR.use_cassette("vat/price_by_country_code") do
-          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Vat).to receive(:get_and_parse).with(
             "price",
             hash_including(:amount => 100, :country_code => "NL")
           )
@@ -149,9 +149,9 @@ describe Apilayer::Vat do
         end
       end
 
-      it "invokes get_and_parse_request with ip_address" do
+      it "invokes get_and_parse with ip_address" do
         VCR.use_cassette("vat/price_by_ip_address") do
-          expect(Apilayer::Vat).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Vat).to receive(:get_and_parse).with(
             "price",
             hash_including(:amount => 100, :ip_address => "176.249.153.36")
           )

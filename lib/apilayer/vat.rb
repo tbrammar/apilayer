@@ -22,23 +22,23 @@ module Apilayer
 
     def self.validate(vat_number)
       params = {:vat_number => vat_number}
-      get_and_parse_request("validate", params)
+      get_and_parse("validate", params)
     end
 
     def self.rate(criteria, value)
       validate_country_criteria(criteria)
       params = {criteria.to_sym => value}
-      get_and_parse_request("rate", params)
+      get_and_parse("rate", params)
     end
 
     def self.rate_list
-      get_and_parse_request("rate_list")
+      get_and_parse("rate_list")
     end
 
     def self.price(price, criteria, value)
       validate_country_criteria(criteria)
       params = {:amount => price, criteria.to_sym => value}
-      get_and_parse_request("price", params)
+      get_and_parse("price", params)
     end
 
   end

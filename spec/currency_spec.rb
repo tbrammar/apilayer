@@ -44,9 +44,9 @@ describe Apilayer::Currency do
         end      
       end
 
-      it "invokes get_and_parse_request without currencies" do
+      it "invokes get_and_parse without currencies" do
         VCR.use_cassette("currency/live_no_currencies_specified") do
-          expect(Apilayer::Currency).to receive(:get_and_parse_request).with("live")
+          expect(Apilayer::Currency).to receive(:get_and_parse).with("live")
           Apilayer::Currency.live
         end
       end
@@ -65,9 +65,9 @@ describe Apilayer::Currency do
         end
       end
 
-      it "invokes get_and_parse_request with currencies" do
+      it "invokes get_and_parse with currencies" do
         VCR.use_cassette("currency/live_with_currencies_specified") do
-          expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
             "live", {:currencies => "EUR,GBP,CHF"}
           )
           Apilayer::Currency.live("EUR", "GBP", "CHF")
@@ -87,9 +87,9 @@ describe Apilayer::Currency do
         end    
       end
 
-      it "invokes get_and_parse_request without currencies" do
+      it "invokes get_and_parse without currencies" do
         VCR.use_cassette("currency/historical_no_currency_specified") do
-          expect(Apilayer::Currency).to receive(:get_and_parse_request).with("historical", {:date => "2016-05-06"})
+          expect(Apilayer::Currency).to receive(:get_and_parse).with("historical", {:date => "2016-05-06"})
           Apilayer::Currency.historical("2016-05-06")
         end    
       end
@@ -108,9 +108,9 @@ describe Apilayer::Currency do
         end
       end
 
-      it "invokes get_and_parse_request with currencies in params-hash" do
+      it "invokes get_and_parse with currencies in params-hash" do
         VCR.use_cassette("currency/historical_with_specified_currencies") do
-          expect(Apilayer::Currency).to receive(:get_and_parse_request).with(
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
             "historical", hash_including(:date => "2016-05-06", :currencies => "EUR,GBP,CHF") 
           )
           Apilayer::Currency.historical("2016-05-06", "EUR", "GBP", "CHF" )
