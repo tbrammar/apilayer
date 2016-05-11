@@ -5,11 +5,9 @@ module Apilayer
     extend ConnectionHelper
 
     ##
-    # Creates a connection to currencylayer, using the :currency_key configured with Apilayer module
-    def self.connection
-      @connection ||= ::Faraday.new(:url => 'http://apilayer.net', 
-                                    :params => {"access_key" => Apilayer.configs[:currency_key]})
-    end
+    # Determines which access_key in Apilayer.configs to use 
+    # in order to to make a connection to currencylayer
+    APILAYER_CONFIG_KEY = :currency_key
 
     ### API methods
     #

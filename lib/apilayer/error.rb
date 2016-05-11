@@ -1,3 +1,5 @@
+##
+# Error-class for errors that are returned by apilayer's services
 module Apilayer
   class Error < StandardError
     attr_reader :code

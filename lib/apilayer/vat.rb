@@ -1,6 +1,5 @@
 ##
 # Ruby wrapper for vatlayer. See https://vatlayer.com/documentation for more info
-
 module Apilayer
   module Vat
     extend ConnectionHelper
@@ -8,11 +7,9 @@ module Apilayer
     COUNTRY_CRITERIA_MISSING_MSG = "You must provide either :country_code or :ip_address"
 
     ##
-    # Creates a connection to vatlayer, using the :vat_key configured with Apilayer module
-    def self.connection
-      @connection ||= ::Faraday.new(:url => 'http://apilayer.net',
-                                    :params => {"access_key" => Apilayer.configs[:vat_key]})
-    end
+    # Determines which access_key in Apilayer.configs to use 
+    # in order to make a connection to vatlayer
+    APILAYER_CONFIG_KEY = :vat_key
 
     ##
     # Validates whether a supported criteria has been provided to .rate and .price
