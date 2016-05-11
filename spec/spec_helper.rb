@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'pry'
 require 'vcr'
 require 'webmock/rspec'
