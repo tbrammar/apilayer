@@ -42,14 +42,6 @@ module Apilayer
       get_and_parse("historical", params)
     end
 
-    ## 
-    # Pending
-    # def self.convert(from, to, amount, date=nil)
-    #   params = {:from => from, :to => to, :amount => amount}
-    #   params.merge!(:date => date) if date
-    #   get_and_parse("convert", params)
-    # end
-
     ##
     # Joins currencies in an array as a comma-separated-string
     def self.join_by_commas(currencies)
