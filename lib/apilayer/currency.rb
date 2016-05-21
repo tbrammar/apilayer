@@ -38,8 +38,7 @@ module Apilayer
       else
         params = {}
         if opts[:currencies] && opts[:currencies].any?
-          currencies_str = join_by_commas(opts[:currencies])
-          params[:currencies ] = currencies_str
+          params[:currencies ] = join_by_commas(opts[:currencies])
         end
         if opts[:source]
           params[:source] = opts[:source]
@@ -53,11 +52,22 @@ module Apilayer
     # When no currency-codes are specified, it will return all exchange rates for your source-currency.
     # Example:
     #   Apilayer::Currency.historical("2016-01-01")
-    #   Apilayer::Currency.historical("2016-01-01", "EUR", "GBP", "CHF")
-    def self.historical(date, *currencies)      
-      params = {:date => date}
-      params.merge!(:currencies => join_by_commas(currencies)) if currencies.any?
-      get_and_parse("historical", params)
+    #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
+    def self.historical(date, opts={})
+      validate_options(opts)   
+      params = {:date => date}      
+      if opts.empty?
+        get_and_parse("historical", params)
+      else
+        if opts[:currencies] && opts[:currencies].any?
+          params[:currencies] = join_by_commas(opts[:currencies])
+        end
+        if opts[:source]
+          params[:source] = opts[:source]
+        end
+        get_and_parse("historical", params)
+      end
     end
 
     ##
