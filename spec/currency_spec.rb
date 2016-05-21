@@ -21,9 +21,18 @@ describe Apilayer::Currency do
   end
 
   describe :live do
-    context "no currencies specified with argument" do
+    context "invalid options provided" do
+      it "raises an Apilayer::Error" do
+        expect{Apilayer::Currency.live(:foo => "bar")}.to raise_error(
+          Apilayer::Error,
+          Apilayer::Currency::INVALID_OPTIONS_MSG
+        )
+      end
+    end
+
+    context "no options specified" do
       it "returns a Hash with live quotes for all currencies" do
-        VCR.use_cassette("currency/live_no_currencies_specified") do
+        VCR.use_cassette("currency/live_no_options") do
           api_resp = Apilayer::Currency.live
           expect(api_resp).to be_a Hash
 
@@ -34,10 +43,28 @@ describe Apilayer::Currency do
         end      
       end
 
-      it "invokes get_and_parse without currencies" do
-        VCR.use_cassette("currency/live_no_currencies_specified") do
+      it "invokes get_and_parse without params" do
+        VCR.use_cassette("currency/live_no_options") do
           expect(Apilayer::Currency).to receive(:get_and_parse).with("live")
           Apilayer::Currency.live
+        end
+      end
+    end
+
+    context "source currency provided" do
+      it "returns a Hash with live quotes for all currencies with source currency as base" do
+        VCR.use_cassette("currency/live_only_source_specified") do
+          api_resp = Apilayer::Currency.live(:source => "EUR")
+          expect(api_resp).to be_a Hash
+          expect(api_resp["source"]).to eq "EUR"
+          expect(api_resp["quotes"]["EURAED"]).to eq 4.121599
+        end
+      end
+
+      it "invokes get_and_parse with :source within params" do
+        VCR.use_cassette("currency/live_only_source_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with("live", {:source => "EUR"})
+          Apilayer::Currency.live({:source => "EUR"})
         end
       end
     end
@@ -45,7 +72,7 @@ describe Apilayer::Currency do
     context "currencies specified with argument" do
       it "returns a Hash with live quotes for specified currencies" do
         VCR.use_cassette("currency/live_with_currencies_specified") do
-          api_resp = Apilayer::Currency.live("EUR", "GBP", "CHF")
+          api_resp = Apilayer::Currency.live(:currencies => ["EUR", "GBP", "CHF"])
           expect(api_resp).to be_a Hash
 
           expect(api_resp["quotes"].size).to eq 3
@@ -55,25 +82,48 @@ describe Apilayer::Currency do
         end
       end
 
-      it "invokes get_and_parse with currencies" do
+      it "invokes get_and_parse with :currencies within params" do
         VCR.use_cassette("currency/live_with_valid_currencies_specified") do
           expect(Apilayer::Currency).to receive(:get_and_parse).with(
             "live", {:currencies => "EUR,GBP,CHF"}
           )
-          Apilayer::Currency.live("EUR", "GBP", "CHF")
+          Apilayer::Currency.live(:currencies => ["EUR", "GBP", "CHF"])
         end
       end
 
       context "invalid currency-codes provided" do
         it "raises an error" do
           VCR.use_cassette("currency/live_with_invalid_currencies_specified") do
-            expect{Apilayer::Currency.live("QQQ")}.to raise_error(
+            expect{Apilayer::Currency.live(:currencies => ["QQQ"])}.to raise_error(
               Apilayer::Error,
               "You have provided one or more invalid Currency Codes. [Required format: currencies=EUR,USD,GBP,...]"
             )
           end
         end
       end
+    end
+
+    context "currencies and source provided as options" do
+      it "returns a Hash with live quotes for specivied currencies with source currency as base" do
+        VCR.use_cassette("currency/live_with_currencies_and_source_specified") do
+          api_resp = Apilayer::Currency.live(:currencies => %w[USD GBP CHF], :source => "EUR")
+          expect(api_resp).to be_a Hash
+
+          expect(api_resp["source"]).to eq "EUR"
+          expect(api_resp["quotes"]["EURUSD"]).to eq 1.122149
+          expect(api_resp["quotes"]["EURGBP"]).to eq 0.773416
+          expect(api_resp["quotes"]["EURCHF"]).to eq 1.111192
+        end
+      end
+
+      it "invokes get_and_parse with :currencies and :source within params" do
+        VCR.use_cassette("currency/live_with_valid_currencies_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            "live", hash_including(:currencies => "USD,GBP,CHF", :source => "EUR")
+          )
+          Apilayer::Currency.live(:currencies => ["USD", "GBP", "CHF"], :source => "EUR")
+        end
+      end      
     end
   end
 

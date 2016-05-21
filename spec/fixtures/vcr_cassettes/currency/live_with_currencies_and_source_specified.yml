@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://apilayer.net/api/live?access_key=currency_layer_key123&currencies=USD,GBP,CHF&source=EUR
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 21 May 2016 12:09:34 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Powered-By:
+      - PHP/5.5.9-1ubuntu4.14
+      Last-Modified:
+      - Sat, 21 May 2016 12:09:07 GMT
+      Etag:
+      - 64533345a3b9633ffe53e61dd627a67b
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Length:
+      - '213'
+      Content-Type:
+      - application/json; Charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: '{"success":true,"terms":"https:\/\/currencylayer.com\/terms","privacy":"https:\/\/currencylayer.com\/privacy","timestamp":1463832547,"source":"EUR","quotes":{"EURUSD":1.122149,"EURGBP":0.773416,"EURCHF":1.111192}}'
+    http_version: 
+  recorded_at: Sat, 21 May 2016 12:08:27 GMT
+recorded_with: VCR 3.0.1
