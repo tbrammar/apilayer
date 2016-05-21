@@ -3,8 +3,10 @@
 Ruby wrapper for various services of apilayer.
 See http://apilayer.com for more details.
 
-=== Version 1.0
-For this version, only the API-features that are available to the free accounts are supported. See the documentation of http://currencylayer.com and http://vatlayer.com for more details.
+=== Version 1.1
+- Major change to how .live and .historical in Apilayer::Currency are invoked.
+- Added :source option to Apilayer::Currency.live and Apilayer::Currency.historical methods. This option is only available to paid users of currencylayer.
+
 
 === Installation
 
@@ -37,13 +39,16 @@ Once that is done, you are ready to go
 ==== currencylayer
 After setting the access_key for *currencylayer*, you can use Apilayer::Currency to call *currencylayer*'s API
   Apilayer::Currency.live
-  Apilayer::Currency.live("EUR", "GBP", "CHF")
-  
+  Apilayer::Currency.live(:currencies => %w[GBP, CHF])
+  Apilayer::Currency.live(:source => "EUR") # source-currency is USD by default
+  Apilayer::Currency.live(:source => "EUR", :currencies => %w[GBP, CHF])
+
   Apilayer::Currency.historical("2016-01-01")
-  Apilayer::Currency.historical("2016-01-01", "EUR", "GBP", "CHF")
+  Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF])
+  Apilayer::Currency.historical(:source => "EUR") # source-currency is USD by default
+  Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
 
 ==== vatlayer
-
 After setting the access_key for *vatlayer*, you can use Apilayer::Vat to call *vatlayer*'s API
 
   Apilayer::Vat.validate("LU26375245")
