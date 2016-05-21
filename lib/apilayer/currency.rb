@@ -66,6 +66,9 @@ module Apilayer
     ##
     # Api-Method: Calls the /convert endpoint, requires :from, :to and :amount
     # When :date hasn't been passed, the latest available exchange rates will be used for your conversion.
+    # Example:
+    #   Apilayer::Currency.convert("EUR", "CHF", 100)
+    #   Apilayer::Currency.convert("EUR", "CHF", 100, "2015-06-01")
     def self.convert(from, to, amount, date=nil)
       params = {:from => from, :to => to, :amount => amount}
       params.merge!(:date => date) if date
