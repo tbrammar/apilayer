@@ -9,6 +9,9 @@ module Apilayer
     # in order to to make a connection to currencylayer
     APILAYER_CONFIG_KEY = :currency_key
     INVALID_OPTIONS_MSG = "You have provided an invalid option. Allowed options are :currencies and :source"
+    LIVE_SLUG = "live"
+    HISTORICAL_SLUG = "historical"
+
     ## Validations 
     # 
     def self.validate_options(options)
@@ -34,16 +37,9 @@ module Apilayer
       validate_options(opts)
 
       if opts.empty?
-        get_and_parse("live")
+        get_and_parse LIVE_SLUG
       else
-        params = {}
-        if opts[:currencies] && opts[:currencies].any?
-          params[:currencies ] = join_by_commas(opts[:currencies])
-        end
-        if opts[:source]
-          params[:source] = opts[:source]
-        end
-        get_and_parse("live", params)
+        get_and_parse_with_options(LIVE_SLUG, opts)
       end
     end
 
@@ -56,21 +52,30 @@ module Apilayer
     #   Apilayer::Currency.historical(:source => "EUR")
     #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
     def self.historical(date, opts={})
-      validate_options(opts)   
-      params = {:date => date}      
+      validate_options(opts)
+      params = {:date => date}
+
       if opts.empty?
-        get_and_parse("historical", params)
+        get_and_parse(HISTORICAL_SLUG, params)
       else
-        if opts[:currencies] && opts[:currencies].any?
-          params[:currencies] = join_by_commas(opts[:currencies])
-        end
-        if opts[:source]
-          params[:source] = opts[:source]
-        end
-        get_and_parse("historical", params)
+        get_and_parse_with_options(HISTORICAL_SLUG, opts, params)
       end
     end
 
+    def self.get_and_parse_with_options(slug, opts, params={})
+      params = add_options_to_params(opts, params)
+      get_and_parse(slug, params)
+    end
+
+    def self.add_options_to_params(opts, params)
+      if opts[:currencies] && opts[:currencies].any?
+        params[:currencies] = join_by_commas(opts[:currencies])
+      end
+      if opts[:source]
+        params[:source] = opts[:source]
+      end
+      params
+    end
     ##
     # Joins currencies in an array as a comma-separated-string
     def self.join_by_commas(currencies)
