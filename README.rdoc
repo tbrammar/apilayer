@@ -3,6 +3,9 @@
 Ruby wrapper for various services of apilayer.
 See http://apilayer.com for more details.
 
+=== Version 1.2
+Added .convert to Apilayer::Currency
+
 === Version 1.1
 - Major change to how .live and .historical in Apilayer::Currency are invoked.
 - Added :source option to Apilayer::Currency.live and Apilayer::Currency.historical methods. This option is only available to paid users of currencylayer.
