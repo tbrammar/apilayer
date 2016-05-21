@@ -53,6 +53,7 @@ module Apilayer
     # Example:
     #   Apilayer::Currency.historical("2016-01-01")
     #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.historical(:source => "EUR")
     #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
     def self.historical(date, opts={})
       validate_options(opts)   
