@@ -234,6 +234,31 @@ describe Apilayer::Currency do
     end    
   end
 
-  describe :convert
+  describe :convert do
+    context "no date provided" do
+      it "invokes get_and_parse with :from, :to and :amount in its params" do
+        VCR.use_cassette("currency/convert_without_date_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CONVERT_SLUG, 
+            hash_including(:from => "EUR", :to => "CHF", :amount => 10)
+          )
+          Apilayer::Currency.convert("EUR", "CHF", 10)
+        end
+      end
+    end
+
+    context "date provided" do
+      it "invokes get_and_parse with :from, :to, :amount and :date in its params" do
+        VCR.use_cassette("currency/convert_with_date_specified") do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CONVERT_SLUG, 
+            hash_including(:from => "EUR", :to => "CHF", 
+                           :amount => 10, :date => "2016-01-01")            
+          )
+          Apilayer::Currency.convert("EUR", "CHF", 10, "2016-01-01")
+        end
+      end
+    end
+  end
 
 end

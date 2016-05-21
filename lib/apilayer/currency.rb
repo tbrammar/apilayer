@@ -11,6 +11,7 @@ module Apilayer
     INVALID_OPTIONS_MSG = "You have provided an invalid option. Allowed options are :currencies and :source"
     LIVE_SLUG = "live"
     HISTORICAL_SLUG = "historical"
+    CONVERT_SLUG = "convert"
 
     ## Validations 
     # 
@@ -62,6 +63,18 @@ module Apilayer
       end
     end
 
+    ##
+    # Api-Method: Calls the /convert endpoint, requires :from, :to and :amount
+    # When :date hasn't been passed, the latest available exchange rates will be used for your conversion.
+    def self.convert(from, to, amount, date=nil)
+      params = {:from => from, :to => to, :amount => amount}
+      params.merge!(:date => date) if date
+      get_and_parse(CONVERT_SLUG, params)
+    end
+
+
+
+    ## Internal Methods
     def self.get_and_parse_with_options(slug, opts, params={})
       params = add_options_to_params(opts, params)
       get_and_parse(slug, params)
