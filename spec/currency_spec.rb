@@ -261,4 +261,105 @@ describe Apilayer::Currency do
     end
   end
 
+  describe :timeframe do
+    context "invalid options provided" do
+      it "raises an Apilayer::Error" do
+        expect do
+          Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", {:foo => "bar"})
+        end.to raise_error(
+          Apilayer::Error,
+          Apilayer::Currency::INVALID_OPTIONS_MSG
+        )
+      end
+    end
+
+    context "no options specified" do
+      it "invokes .get_and_parse without :currencies nor :source" do
+        expect(Apilayer::Currency).to receive(:get_and_parse).with(
+          Apilayer::Currency::TIMEFRAME_SLUG,
+          {:start_date => "2016-01-01", :end_date => "2016-06-01"}
+        )
+        Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
+      end
+
+      it "retrieves exchange-rates for all currencies based on USD for the specified timeframe" do
+        VCR.use_cassette("currency/timeframe_without_options.yml") do
+          api_resp = Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
+          expect(api_resp["timeframe"]).to be true
+          expect(api_resp["start_date"]).to eq "2016-01-01"
+          expect(api_resp["end_date"]).to eq "2016-06-01"
+          expect(api_resp["source"]).to eq "USD"
+          expect(api_resp["quotes"]["2016-01-01"].size).to eq 168
+        end
+      end
+    end
+
+    context "only :currencies option specified" do
+      it "returns exchange-rates for the specified currencies only" do
+        VCR.use_cassette("currency/timeframe_with_currencies.yml") do
+          api_resp = Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
+          expect(api_resp["timeframe"]).to be true
+          expect(api_resp["start_date"]).to eq "2016-01-01"
+          expect(api_resp["end_date"]).to eq "2016-06-01"
+          expect(api_resp["source"]).to eq "USD"
+          expect(api_resp["quotes"]["2016-01-01"].size).to eq 2
+          expect(api_resp["quotes"]["2016-01-01"]).to have_key "USDGBP"
+          expect(api_resp["quotes"]["2016-01-01"]).to have_key "USDCHF"
+        end
+      end
+
+      it "invokes .get_and_parse with :currencies" do
+        expect(Apilayer::Currency).to receive(:get_and_parse).with(
+          Apilayer::Currency::TIMEFRAME_SLUG,
+          {:start_date => "2016-01-01", :end_date => "2016-06-01", :currencies => "GBP,CHF"}
+        )
+        Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
+      end
+    end
+
+    context "only :source option specified" do
+      it "returns exchange-rates based on given currency as source" do
+        VCR.use_cassette("currency/timeframe_with_source.yml") do
+          api_resp = Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :source => "EUR")
+          expect(api_resp["timeframe"]).to be true
+          expect(api_resp["start_date"]).to eq "2016-01-01"
+          expect(api_resp["end_date"]).to eq "2016-06-01"
+          expect(api_resp["source"]).to eq "EUR"
+          expect(api_resp["quotes"]["2016-01-01"].count).to eq 168
+        end
+      end
+
+      it "invokes .get_and_parse with :source" do
+        expect(Apilayer::Currency).to receive(:get_and_parse).with(
+          Apilayer::Currency::TIMEFRAME_SLUG,
+          {:start_date => "2016-01-01", :end_date => "2016-06-01", :source => "EUR"}
+        )
+        Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :source => "EUR")
+      end
+    end
+
+    context "both :currencies and :source specified" do
+      it "returns exchange-rates for the specified currencies based on a specified source-currency" do
+        VCR.use_cassette("currency/timeframe_with_currencies_and_source") do
+          api_resp = Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", 
+            :currencies => %w[GBP CHF], :source => "EUR")
+          expect(api_resp["timeframe"]).to be true
+          expect(api_resp["start_date"]).to eq "2016-01-01"
+          expect(api_resp["end_date"]).to eq "2016-06-01"
+          expect(api_resp["source"]).to eq "EUR"
+          expect(api_resp["quotes"]["2016-01-01"].count).to eq 2
+          expect(api_resp["quotes"]["2016-01-01"]).to have_key "EURGBP"
+          expect(api_resp["quotes"]["2016-01-01"]).to have_key "EURCHF"          
+        end
+      end
+
+      it "invokes .get_and_parse with :source and :currencies" do
+        expect(Apilayer::Currency).to receive(:get_and_parse).with(
+          Apilayer::Currency::TIMEFRAME_SLUG,
+          {:start_date => "2016-01-01", :end_date => "2016-06-01", :source => "EUR", :currencies => "GBP,CHF"}
+        )
+        Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
+      end      
+    end
+  end
 end

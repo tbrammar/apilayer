@@ -3,6 +3,9 @@
 Ruby wrapper for various services of apilayer.
 See http://apilayer.com for more details.
 
+=== Version 1.3
+Added .timeframe to Apilayer::Currency
+
 === Version 1.2
 Added .convert to Apilayer::Currency
 
@@ -52,7 +55,12 @@ After setting the access_key for *currencylayer*, you can use Apilayer::Currency
   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
 
   Apilayer::Currency.convert("EUR", "CHF", 100) # convert 100 EUR to CHF
-  Apilayer::Currency.convert("EUR", "CHF", 100, "2015-06-01") # conversion based on specific date
+  Apilayer::Currency.convert("EUR", "CHF", 100, "2015-06-01") # based on specific date
+
+  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
+  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
+  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :source => "EUR")
+  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
 ==== vatlayer
 After setting the access_key for *vatlayer*, you can use Apilayer::Vat to call *vatlayer*'s API
 
