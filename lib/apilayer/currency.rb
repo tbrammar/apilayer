@@ -12,6 +12,7 @@ module Apilayer
     LIVE_SLUG = "live"
     HISTORICAL_SLUG = "historical"
     CONVERT_SLUG = "convert"
+    TIMEFRAME_SLUG = "timeframe"
 
     ## Validations 
     # 
@@ -75,7 +76,20 @@ module Apilayer
       get_and_parse(CONVERT_SLUG, params)
     end
 
-
+    ##
+    # Api-Method: Calls the /timeframe endpoint. Requires :start_date and :end_date
+    # If :currencies hasn't been provided as an option, it will return all exchange-rates for that period of your source-currency
+    # :source can be provided as option to change the source-currency, which is USD by default
+    # The difference between start_date and end_date can be maximum 365 days
+    # Example:
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
+    def self.timeframe(start_date, end_date, opts={})
+      validate_options(opts)
+      params = {:start_date => start_date, :end_date => end_date}
+      get_and_parse_with_options(TIMEFRAME_SLUG, opts, params)
+    end
 
     ## Internal Methods
     def self.get_and_parse_with_options(slug, opts, params={})
