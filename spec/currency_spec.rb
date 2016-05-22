@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Apilayer::Currency do
-  before do
+  before(:each) do
     Apilayer.configure do |configs|
       configs.currency_key = "currency_layer_key123"
     end    
@@ -360,6 +360,161 @@ describe Apilayer::Currency do
         )
         Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
       end      
+    end
+  end
+
+  describe :change do
+    context "only start_date given" do
+      it "raises an error" do
+        expect{ Apilayer::Currency.change("2016-01-01") }.to raise_error(
+          Apilayer::Error,
+          Apilayer::Currency::INVALID_TIMEFRAME_MSG
+        )
+      end
+    end
+
+    context "only end_date given" do
+      it "raises an error" do
+        expect{ Apilayer::Currency.change(nil, "2016-01-01") }.to raise_error(
+          Apilayer::Error,
+          Apilayer::Currency::INVALID_TIMEFRAME_MSG
+        )
+      end
+    end
+
+    context "no start_date nor end_date given" do
+      context "with currencies specified" do
+        it "returns margin- and percentage-change from last day for the specified quotes" do
+          VCR.use_cassette("currency/change_no_timeframe_with_currencies_specified") do
+            api_resp = Apilayer::Currency.change(nil,nil,:currencies => %w[CHF GBP])
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "USD"
+            expect(api_resp["quotes"].size).to eq 2
+            expect(api_resp["quotes"]).to have_key "USDCHF"
+            expect(api_resp["quotes"]).to have_key "USDGBP"
+          end
+        end
+
+        it "invokes .get_and_parse with :currencies as option" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:currencies => "CHF,EUR"}
+          )
+          Apilayer::Currency.change(nil,nil,:currencies => %w[CHF EUR])
+        end
+      end
+
+      context "with source specified" do
+        it "returns margin- and percentage-changes from last day for a specific source-currency" do
+          VCR.use_cassette("currency/change_no_timeframe_with_source_specified") do
+            api_resp = Apilayer::Currency.change(nil,nil,:source => "EUR")
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "EUR"
+            expect(api_resp["quotes"].size).to eq 168
+          end
+        end
+
+        it "invokes .get_and_parse with :source as option" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:source => "EUR"}
+          )
+          Apilayer::Currency.change(nil,nil,:source => "EUR")
+        end        
+      end
+
+      context "with currencies and source specified" do
+        it "returns margin- and percentage-changes from last day for the specified quotes and source-currency" do
+          VCR.use_cassette("currency/change_no_timeframe_with_currencies_and_source_specified") do
+            api_resp = Apilayer::Currency.change(nil,nil,:currencies => %w[CHF GBP], :source => "EUR")
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "EUR"
+            expect(api_resp["quotes"].size).to eq 2
+            expect(api_resp["quotes"]).to have_key "EURCHF"
+            expect(api_resp["quotes"]).to have_key "EURGBP"
+          end
+        end
+
+        it "invokes .get_and_parse with :source and :currencies as option" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:source => "EUR", :currencies => "CHF,GBP"}
+          )
+          Apilayer::Currency.change(nil,nil,:currencies => %w[CHF GBP], :source => "EUR")
+        end
+      end
+    end
+
+    context "both start_date and end_date given" do
+      context "with currencies specified" do
+        it "returns margin- and percentage-changes for the specified timeframe for the specified quotes" do
+          VCR.use_cassette("currency/change_with_timeframe_with_currencies_specified") do
+            api_resp = Apilayer::Currency.change("2016-01-01", "2016-03-01", :currencies => %w[CHF GBP])
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "USD"
+            expect(api_resp["start_date"]).to eq "2016-01-01"
+            expect(api_resp["end_date"]).to eq "2016-03-01"
+            expect(api_resp["quotes"].size).to eq 2
+            expect(api_resp["quotes"]).to have_key "USDCHF"
+            expect(api_resp["quotes"]).to have_key "USDGBP"
+          end
+        end
+
+        it "invokes .get_and_parse with :currencies, :start_date and :end_date" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:start_date => "2016-01-01", :end_date => "2016-03-01", :currencies => "CHF,GBP"}
+          )
+          Apilayer::Currency.change("2016-01-01", "2016-03-01", :currencies => %w[CHF GBP])
+        end
+      end
+
+      context "with source specified" do
+        it "returns margin- and percentage-changes for the specified timeframe for the source" do
+          VCR.use_cassette("currency/change_with_timeframe_with_source_specified") do
+            api_resp = Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR")
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "EUR"
+            expect(api_resp["start_date"]).to eq "2016-01-01"
+            expect(api_resp["end_date"]).to eq "2016-03-01"
+            expect(api_resp["quotes"].size).to eq 168
+          end
+        end
+
+        it "invokes .get_and_parse with :source, :start_date and :end_date" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:start_date => "2016-01-01", :end_date => "2016-03-01", :source => "EUR"}
+          )
+          Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR")          
+        end
+      end
+
+      context "with currencies and source specified" do
+        it "returns margin- and percentage-change for the specified timeframe scoped by source and quotes" do
+          VCR.use_cassette("currency/change_with_timeframe_with_currencies_and_source_specified") do
+            api_resp = Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR", :currencies => %w[CHF GBP])
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "EUR"
+            expect(api_resp["start_date"]).to eq "2016-01-01"
+            expect(api_resp["end_date"]).to eq "2016-03-01"
+            expect(api_resp["quotes"].size).to eq 2       
+          end
+        end
+        it "invokes .get_and_parse with :currencies, :source, :start_date and :end_date" do
+          expect(Apilayer::Currency).to receive(:get_and_parse).with(
+            Apilayer::Currency::CHANGE_SLUG,
+            {:source => "EUR", :currencies => "CHF,GBP", :start_date => "2016-01-01", :end_date => "2016-03-01"}
+          )
+          Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR", :currencies => %w[CHF GBP])
+        end
+      end
     end
   end
 end

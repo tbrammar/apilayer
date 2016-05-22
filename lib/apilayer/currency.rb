@@ -9,10 +9,12 @@ module Apilayer
     # in order to to make a connection to currencylayer
     APILAYER_CONFIG_KEY = :currency_key
     INVALID_OPTIONS_MSG = "You have provided an invalid option. Allowed options are :currencies and :source"
+    INVALID_TIMEFRAME_MSG = "start_date and end_date must be either provided together or left out together."
     LIVE_SLUG = "live"
     HISTORICAL_SLUG = "historical"
     CONVERT_SLUG = "convert"
     TIMEFRAME_SLUG = "timeframe"
+    CHANGE_SLUG = "change"
 
     ## Validations 
     # 
@@ -24,6 +26,11 @@ module Apilayer
       end
     end
 
+    def self.validate_timeframe_completeness(start_date,end_date)
+      if [start_date,end_date].compact.size == 1
+        raise Apilayer::Error.new(INVALID_TIMEFRAME_MSG)
+      end
+    end
     ### API methods
     #
 
@@ -90,6 +97,19 @@ module Apilayer
       params = {:start_date => start_date, :end_date => end_date}
       get_and_parse_with_options(TIMEFRAME_SLUG, opts, params)
     end
+
+    ##
+    # Api-Method: Calls the /change endpoint.
+    # start_date and end_date are optional, but can't provide one without the other
+    # :currencies and :source are optional
+    def self.change(start_date=nil, end_date=nil, opts={})
+      validate_options(opts)
+      validate_timeframe_completeness(start_date,end_date)
+      params = {:start_date => start_date, 
+        :end_date => end_date
+      }.reject{ |k,v| v.nil? }
+      get_and_parse_with_options(CHANGE_SLUG, opts, params)
+    end    
 
     ## Internal Methods
     def self.get_and_parse_with_options(slug, opts, params={})
