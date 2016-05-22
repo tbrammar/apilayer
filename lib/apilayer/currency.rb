@@ -120,12 +120,15 @@ module Apilayer
       get_and_parse_with_options(CHANGE_SLUG, opts, params)
     end    
 
-    ## Internal Methods
+    ## 
+    # 
     def self.get_and_parse_with_options(slug, opts, params={})
       params = add_options_to_params(opts, params)
       get_and_parse(slug, params)
     end
 
+    ##
+    # Adds currencies and source to query string if they have been provided with options-hash
     def self.add_options_to_params(opts, params)
       if opts[:currencies] && opts[:currencies].any?
         params[:currencies] = join_by_commas(opts[:currencies])
@@ -135,6 +138,7 @@ module Apilayer
       end
       params
     end
+
     ##
     # Joins currencies in an array as a comma-separated-string
     def self.join_by_commas(currencies)
