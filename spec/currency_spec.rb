@@ -20,6 +20,13 @@ describe Apilayer::Currency do
     end
   end
 
+  describe :list do
+    it "invokes .get_and_parse with correct params" do
+      expect(Apilayer::Currency).to receive(:get_and_parse).with(Apilayer::Currency::LIST_SLUG)
+      Apilayer::Currency.list
+    end
+  end
+
   describe :live do
     context "invalid options provided" do
       it "raises an Apilayer::Error" do

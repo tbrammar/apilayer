@@ -15,6 +15,7 @@ module Apilayer
     CONVERT_SLUG = "convert"
     TIMEFRAME_SLUG = "timeframe"
     CHANGE_SLUG = "change"
+    LIST_SLUG = "list"
 
     ## Validations 
     # 
@@ -33,6 +34,12 @@ module Apilayer
     end
     ### API methods
     #
+
+    ##
+    # Api-Method: Calls the /list endpoint to display all supported currencies
+    def self.list
+      get_and_parse LIST_SLUG
+    end
 
     ##
     # Api-Method: Calls the /live endpoint to get real-time exchange rates.
