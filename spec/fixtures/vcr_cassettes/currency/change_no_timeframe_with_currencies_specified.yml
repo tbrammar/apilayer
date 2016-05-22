@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://apilayer.net/api/change?access_key=currency_layer_key123&currencies=CHF,GBP
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 22 May 2016 06:45:23 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Powered-By:
+      - PHP/5.5.9-1ubuntu4.14
+      Etag:
+      - b50e80487687af5010d5042f5bb217c1
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Length:
+      - '358'
+      Content-Type:
+      - application/json; Charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: '{"success":true,"terms":"https:\/\/currencylayer.com\/terms","privacy":"https:\/\/currencylayer.com\/privacy","change":true,"start_date":"2016-05-21","end_date":"2016-05-22","source":"USD","quotes":{"USDCHF":{"start_rate":0.990235,"end_rate":0.990235,"change":0,"change_pct":0},"USDGBP":{"start_rate":0.689227,"end_rate":0.689227,"change":0,"change_pct":0}}}'
+    http_version: 
+  recorded_at: Sun, 22 May 2016 06:44:14 GMT
+recorded_with: VCR 3.0.1
