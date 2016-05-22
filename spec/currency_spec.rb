@@ -383,6 +383,18 @@ describe Apilayer::Currency do
     end
 
     context "no start_date nor end_date given" do
+      context "no options either" do
+        it "returns margin- and percentage-changes for all quotes from yesterday with USD as source" do
+          VCR.use_cassette("currency/change_no_timeframe_no_options_specified") do
+            api_resp = Apilayer::Currency.change
+
+            expect(api_resp["change"]).to be true
+            expect(api_resp["source"]).to eq "USD"
+            expect(api_resp["quotes"].size).to eq 168
+          end
+        end
+      end
+
       context "with currencies specified" do
         it "returns margin- and percentage-change from last day for the specified quotes" do
           VCR.use_cassette("currency/change_no_timeframe_with_currencies_specified") do

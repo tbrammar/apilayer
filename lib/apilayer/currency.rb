@@ -37,7 +37,7 @@ module Apilayer
     ##
     # Api-Method: Calls the /live endpoint to get real-time exchange rates.
     # When no currency-codes are specified, it will return all exchange rates for your source-currency.
-    # Example:
+    # Examples:
     #   Apilayer::Currency.live
     #   Apilayer::Currency.live(:currencies => %w[GBP, CHF])
     #   Apilayer::Currency.live(:source => "EUR")
@@ -55,7 +55,7 @@ module Apilayer
     ##
     # Api-Method: Calls the /historical endpoint to get exchange rates for a specific date.
     # When no currency-codes are specified, it will return all exchange rates for your source-currency.
-    # Example:
+    # Examples:
     #   Apilayer::Currency.historical("2016-01-01")
     #   Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF])
     #   Apilayer::Currency.historical(:source => "EUR")
@@ -74,9 +74,9 @@ module Apilayer
     ##
     # Api-Method: Calls the /convert endpoint, requires :from, :to and :amount
     # When :date hasn't been passed, the latest available exchange rates will be used for your conversion.
-    # Example:
+    # Examples:
     #   Apilayer::Currency.convert("EUR", "CHF", 100)
-    #   Apilayer::Currency.convert("EUR", "CHF", 100, "2015-06-01")
+    #   Apilayer::Currency.convert("EUR", "CHF", 100, "2015-03-01")
     def self.convert(from, to, amount, date=nil)
       params = {:from => from, :to => to, :amount => amount}
       params.merge!(:date => date) if date
@@ -88,10 +88,10 @@ module Apilayer
     # If :currencies hasn't been provided as an option, it will return all exchange-rates for that period of your source-currency
     # :source can be provided as option to change the source-currency, which is USD by default
     # The difference between start_date and end_date can be maximum 365 days
-    # Example:
-    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
-    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
-    #   Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
+    # Examples:
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-03-01")
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-03-01", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.timeframe("2016-01-01", "2016-03-01", :currencies => %w[GBP CHF], :source => "EUR")
     def self.timeframe(start_date, end_date, opts={})
       validate_options(opts)
       params = {:start_date => start_date, :end_date => end_date}
@@ -102,6 +102,15 @@ module Apilayer
     # Api-Method: Calls the /change endpoint.
     # start_date and end_date are optional, but can't provide one without the other
     # :currencies and :source are optional
+    # Examples:
+    #   Apilayer::Currency.change
+    #   Apilayer::Currency.change("2016-01-01", "2016-03-01")
+    #   Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR")
+    #   Apilayer::Currency.change("2016-01-01", "2016-03-01", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR", :currencies => %w[GBP CHF])
+    #   Apilayer::Currency.change(nil, nil, {:source => "EUR"})
+    #   Apilayer::Currency.change(nil, nil, {:currencies => %w[GBP CHF]})
+    #   Apilayer::Currency.change(nil, nil, {:source => "EUR", :currencies => %w[GBP CHF]})
     def self.change(start_date=nil, end_date=nil, opts={})
       validate_options(opts)
       validate_timeframe_completeness(start_date,end_date)
