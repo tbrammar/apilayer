@@ -5,7 +5,6 @@ describe Apilayer::Currency do
     Apilayer.configure do |configs|
       configs.currency_key = "currency_layer_key123"
     end    
-    Apilayer::Currency.reset_connection
   end
 
   describe :connection do

@@ -5,7 +5,6 @@ describe Apilayer::Vat do
     Apilayer.configure do |configs|
       configs.vat_key = "vat_layer_key123"
     end
-    Apilayer::Vat.reset_connection
   end
 
   describe :connection do
