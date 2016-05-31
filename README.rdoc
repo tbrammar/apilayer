@@ -4,14 +4,14 @@ Ruby wrapper for various services of apilayer.
 See http://apilayer.com for more details.
 
 === Version 1.5
-Improved reconfiguration-mechanism in Apilayer.
-Added HTTPS-option in Apilayer module.
-With this release, all paid-features of vatlayer and currencylayer are fully covered.
+- Improved reconfiguration-mechanism in Apilayer.
+- Added HTTPS-option in Apilayer module.
+- With this release, all paid-features of vatlayer and currencylayer are fully covered.
 
 === Version 1.2 - 1.4
-Added .change and .list to Apilayer::Currency
-Added .timeframe to Apilayer::Currency
-Added .convert to Apilayer::Currency
+- Added .change and .list to Apilayer::Currency
+- Added .timeframe to Apilayer::Currency
+- Added .convert to Apilayer::Currency
 
 === Version 1.1
 - Major change to how .live and .historical in Apilayer::Currency are invoked.
