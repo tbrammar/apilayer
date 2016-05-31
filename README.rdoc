@@ -3,13 +3,9 @@
 Ruby wrapper for various services of apilayer.
 See http://apilayer.com for more details.
 
-=== Version 1.4
+=== Version 1.2 - 1.4
 Added .change and .list to Apilayer::Currency
-
-=== Version 1.3
 Added .timeframe to Apilayer::Currency
-
-=== Version 1.2
 Added .convert to Apilayer::Currency
 
 === Version 1.1

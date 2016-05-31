@@ -37,5 +37,19 @@ describe Apilayer do
       end
       expect(Apilayer.configs.vat_key).to eq "bar456"
     end    
+
+    it "resets observers" do
+      Apilayer::OBSERVERS.each do |observer|
+        expect(observer).to receive(:reset_connection).twice
+      end
+      
+      Apilayer.configure do |config|
+        config.vat_key = "bar456"
+      end
+
+      Apilayer.configure do |config|
+        config.vat_key = "foo123"
+      end      
+    end
   end  
 end
