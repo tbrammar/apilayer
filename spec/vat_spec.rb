@@ -28,12 +28,12 @@ describe Apilayer::Vat do
     context "secure connection" do
       before do
         Apilayer.configure do |configs|
-          configs.vat_secure = true
+          configs.vat_https = true
         end
       end
       after do
         Apilayer.configure do |configs|
-          configs.vat_secure = false
+          configs.vat_https = false
         end
       end
 

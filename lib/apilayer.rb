@@ -8,7 +8,7 @@ module Apilayer
   end
 
   def self.init_configs
-    keys = Struct.new(:currency_key, :vat_key, :currency_secure, :vat_secure)
+    keys = Struct.new(:currency_key, :vat_key, :currency_https, :vat_https)
     keys.new
   end
 
