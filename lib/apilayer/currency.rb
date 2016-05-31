@@ -8,6 +8,7 @@ module Apilayer
     # Determines which access_key in Apilayer.configs to use 
     # in order to to make a connection to currencylayer
     APILAYER_CONFIG_KEY = :currency_key
+    APILAYER_SECURE = :currency_secure
     INVALID_OPTIONS_MSG = "You have provided an invalid option. Allowed options are :currencies and :source"
     INVALID_TIMEFRAME_MSG = "start_date and end_date must be either provided together or left out together."
     LIVE_SLUG = "live"

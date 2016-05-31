@@ -17,6 +17,31 @@ describe Apilayer::Vat do
         expect(conn.params["access_key"]).to eq "vat_layer_key123"
       end
     end
+
+    context "non-secure connection" do
+      it "returns a connection to http protocol" do
+        conn = Apilayer::Vat.connection
+        expect(conn.url_prefix).to be_a URI::HTTP
+      end
+    end
+
+    context "secure connection" do
+      before do
+        Apilayer.configure do |configs|
+          configs.vat_secure = true
+        end
+      end
+      after do
+        Apilayer.configure do |configs|
+          configs.vat_secure = false
+        end
+      end
+
+      it "returns a connection to https protocol" do
+        conn = Apilayer::Vat.connection
+        expect(conn.url_prefix).to be_a URI::HTTPS
+      end
+    end
   end
 
   describe :validate do

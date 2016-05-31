@@ -10,7 +10,7 @@ module Apilayer
     # Determines which access_key in Apilayer.configs to use 
     # in order to make a connection to vatlayer
     APILAYER_CONFIG_KEY = :vat_key
-
+    APILAYER_SECURE = :vat_secure
     ##
     # Validates whether a supported criteria has been provided to .rate and .price
     def self.validate_country_criteria(criteria)
