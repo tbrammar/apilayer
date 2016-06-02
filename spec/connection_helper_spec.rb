@@ -60,20 +60,6 @@ describe Apilayer::ConnectionHelper do
       expect(extended_module.configs.access_key).to eq "foo123"
       expect(extended_module.configs.https).to eq true
     end
-
-    it "resets observers" do
-      subject::OBSERVERS.each do |observer|
-        expect(observer).to receive(:reset_connection).twice
-      end
-      
-      subject.configure do |config|
-        config.vat_key = "bar456"
-      end
-
-      subject.configure do |config|
-        config.vat_key = "foo123"
-      end      
-    end
   end  
 
   describe :connection do
