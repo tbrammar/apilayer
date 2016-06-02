@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apilayer (1.5.0)
+    apilayer (2.0.0)
       faraday (~> 0.9, >= 0.9.0)
       json (~> 1.7, >= 1.7.0)
 

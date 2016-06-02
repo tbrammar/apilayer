@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name           = 'apilayer'
-  spec.version        = '1.5.0'
+  spec.version        = '2.0.0'
   spec.authors        = ["Alex Fong"]
   spec.email          = ["actfong@gmail.com"]
   spec.files          = Dir["lib/apilayer.rb", 
@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
                           "README.rdoc"
                         ]
 
-  spec.summary        = %q{Ruby wrapper for currencylayer and vatlayer from apilayer.com. See https://apilayer.com/ for more details.}
-  spec.description    = %q{Ruby wrapper for currencylayer and vatlayer from apilayer.com. See https://apilayer.com/ for more details.}
+  spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details.}
+  spec.description    = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details.}
   spec.homepage       = "https://github.com/actfong/apilayer"
   spec.licenses       = %w(MIT)
 
