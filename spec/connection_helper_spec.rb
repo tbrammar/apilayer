@@ -32,8 +32,8 @@ describe Apilayer::ConnectionHelper do
   end
 
   describe :configs do
-    context "configs already set" do
-      it "won't invoke init_configs again" do
+    context "when already set" do
+      it "won't invoke init_configs again due to memoization" do
         expect(extended_module).to receive(:init_configs).once.and_call_original
         extended_module.configure do |config|
           config.access_key = "foo123"
@@ -121,7 +121,7 @@ describe Apilayer::ConnectionHelper do
   end
 
   describe :get_request do
-    it "returns sends a request to the apilayer.net, along with the slug and params" do
+    it "sends a request to the apilayer.net, along with the slug and params" do
       VCR.use_cassette("vat/validation") do
         resp = extended_module.get_request slug, params
         url = resp.to_hash[:url]
