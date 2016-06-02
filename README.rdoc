@@ -1,7 +1,16 @@
 == apilayer {<img src="https://secure.travis-ci.org/actfong/apilayer.png"/>}[http://travis-ci.org/actfong/apilayer] {<img src="https://codeclimate.com/github/actfong/apilayer.png"/>}[https://codeclimate.com/github/actfong/apilayer] {<img src="https://badge.fury.io/rb/apilayer.svg" alt="Gem Version" />}[https://badge.fury.io/rb/apilayer] 
 
-Ruby wrapper for various services of apilayer.
+With the release of version 2.0, the apilayer gem now act as a dependency for the *currency_layer* and *vat_layer* gems.
+
+Please see https://github.com/actfong/currency_layer and https://github.com/actfong/vat_layer
+
+*apilayer* provides a common-interface to configure and create connections to apilayer.net
 See http://apilayer.com for more details.
+
+=== Version 2.0
+Removed all code related to currencylayer (Apilayer::Currency) and vatlayer (Apilayer::Vat).
+Now act as a dependency to currency_layer and vat_layer gems. 
+ConnectionHelper contains all code related to configuring and creating connections to apilayer.net
 
 === Version 1.5
 - Improved reconfiguration-mechanism in Apilayer.
@@ -30,78 +39,5 @@ Run the following in your console:
 
   $ bundle install
   
-=== Usage
 
-==== Set up Apilayer
-Once you sign up for a service of *apilayer*, you will receive an access_key. Please pay attention that different services of apilayer (such as *vatlayer* and *currencylayer*) have different access keys.
 
-Then you can use your access_key(s) to configure your Apilayer module like this:
-
-  Apilayer.configure do |configs|
-    configs.vat_key = "my_vatlayer_access_key_123"
-    configs.currency_key = "my_currencylayer_access_key_123"
-    configs.vat_https = false
-    configs.currency_https = true
-  end
-
-Please note that you only need to set the access keys and https connections that you need.
-If unset, these values are just nil.
-
-You can always review you configurations with:
-
-  Apilayer.configs
-
-Once your configurations are set, you are ready to go
-
-==== currencylayer
-After setting the access_key for *currencylayer*, you can use Apilayer::Currency to call *currencylayer*'s API
-  Apilayer::Currency.list
-
-  Apilayer::Currency.live
-  Apilayer::Currency.live(:currencies => %w[GBP, CHF])
-  Apilayer::Currency.live(:source => "EUR") # source-currency is USD by default
-  Apilayer::Currency.live(:source => "EUR", :currencies => %w[GBP, CHF])
-
-  Apilayer::Currency.historical("2016-01-01")
-  Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF])
-  Apilayer::Currency.historical(:source => "EUR") # source-currency is USD by default
-  Apilayer::Currency.historical("2016-01-01", :currencies => %w[GBP CHF], :source => "EUR")
-
-  Apilayer::Currency.convert("EUR", "CHF", 100) # convert 100 EUR to CHF
-  Apilayer::Currency.convert("EUR", "CHF", 100, "2015-06-01") # based on specific date
-
-  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01")
-  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF])
-  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :source => "EUR")
-  Apilayer::Currency.timeframe("2016-01-01", "2016-06-01", :currencies => %w[GBP CHF], :source => "EUR")
-
-  Apilayer::Currency.change
-  Apilayer::Currency.change("2016-01-01", "2016-03-01")
-  Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR")
-  Apilayer::Currency.change("2016-01-01", "2016-03-01", :currencies => %w[GBP CHF])
-  Apilayer::Currency.change("2016-01-01", "2016-03-01", :source => "EUR", :currencies => %w[GBP CHF])
-  Apilayer::Currency.change(nil, nil, {:source => "EUR"})
-  Apilayer::Currency.change(nil, nil, {:currencies => %w[GBP CHF]})
-  Apilayer::Currency.change(nil, nil, {:source => "EUR", :currencies => %w[GBP CHF]})
-
-==== vatlayer
-After setting the access_key for *vatlayer*, you can use Apilayer::Vat to call *vatlayer*'s API
-
-  Apilayer::Vat.validate("LU26375245")
-  Apilayer::Vat.rate(:country_code, "NL")
-  Apilayer::Vat.rate(:ip_address, "176.249.153.36")
-  Apilayer::Vat.rate_list
-  Apilayer::Vat.price(100, :country, "NL")
-  Apilayer::Vat.price(100, :ip_address, "176.249.153.36")
-  
-==== Re-Configure Apilayer
-If you happened to have forgotten to set or entered an incorrect value, you can re-configure your Apilayer module by:
-
-  # Example: reconfigure https for vatlayer
-  Apilayer.configure do |configs|
-    configs.vat_https = true
-  end
-
-The action above will not affect the other Apilayer configurations you have set previously. 
-When you try to connect to Apilayer again, it will create a new connection based on the values you provided.
-  
