@@ -1,18 +1,18 @@
 module Apilayer
   module ConnectionHelper
-
+    include Apilayer::Configurations
     ##
     # Creates a connection for the extended module to an apilayer-service, such as currencylayer and vatlayer.
     # Uses access_key(s) configured with Apilayer module.
     def connection
       @connection ||= ::Faraday.new(
         :url => "#{protocol}://apilayer.net",
-        :params => {"access_key" => Apilayer.configs[self.const_get(:APILAYER_CONFIG_KEY)]}
+        :params => {"access_key" => self.configs[:access_key]}
       )
     end
 
     def protocol
-      Apilayer.configs[self.const_get(:APILAYER_SECURE)] ? "https" : "http"
+      self.configs[:https] ? "https" : "http"
     end
     ##
     # Resets the connection for the extended module. Used when the user needs to re-enter his/her access_key(s)
@@ -29,10 +29,10 @@ module Apilayer
 
     ##
     # Makes a get-request to apilayer's service
-    def get_request(url, params={})
+    def get_request(slug, params={})
       # calls connection method on the extended module
       connection.get do |req|
-        req.url "api/#{url}"
+        req.url "api/#{slug}"
         params.each_pair do |k,v|
           req.params[k] = v
         end
