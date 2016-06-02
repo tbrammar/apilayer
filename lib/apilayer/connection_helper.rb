@@ -1,6 +1,24 @@
 module Apilayer
   module ConnectionHelper
-    include Apilayer::Configurations
+
+    def init_configs
+      keys = Struct.new(:access_key, :https)
+      keys.new
+    end
+
+    def configs
+      @configs ||= init_configs
+    end
+
+    def reset_configs!
+      @configs = init_configs
+    end
+
+    def configure(&block)
+      self.reset_connection
+      yield(configs)
+    end
+
     ##
     # Creates a connection for the extended module to an apilayer-service, such as currencylayer and vatlayer.
     # Uses access_key(s) configured with Apilayer module.
@@ -44,10 +62,6 @@ module Apilayer
     # When errors are returned by apilayer, the 'info' and 'code' from its error will be used to raise an Apilayer::Error
     def parse_response(resp)
       body = JSON.parse(resp.body)
-      # According to documentation, currencylayer has a "success" field 
-      # while vatlayer has a "valid" field to indicate whether the request was succesful or not.
-      # However, for both layers, an unsuccesful request would contain an "error" field.
-      # That's why the presence of "error" is chosen to determine whether we should raise an error or not.
       if body['error']
         raise Apilayer::Error.new(
           body['error']['info'],

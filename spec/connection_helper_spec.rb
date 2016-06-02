@@ -18,6 +18,64 @@ describe Apilayer::ConnectionHelper do
   let(:empty_resp){double(:body => '{"success":true}')}
   let(:error_resp){double(:body => '{"success":false,"error":{"code":101,"type":"invalid_access_key","info":"You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]"}}')}
 
+  describe :init_configs do
+    it "returns a Struct" do
+      configs = extended_module.init_configs
+      expect(configs).to be_a Struct
+    end
+
+    it "contains access_key and https members" do
+      configs = extended_module.init_configs
+      expect(configs.members).to include :access_key
+      expect(configs.members).to include :https
+    end
+  end
+
+  describe :configs do
+    context "configs already set" do
+      it "won't invoke init_configs again" do
+        expect(extended_module).to receive(:init_configs).once.and_call_original
+        extended_module.configure do |config|
+          config.access_key = "foo123"
+        end
+        extended_module.configs
+      end
+    end
+  end
+
+  describe :reset_configs! do
+    it "returns an empty @configs" do
+      extended_module.reset_configs!
+      expect(extended_module.instance_variable_get(:@configs).access_key).to be_nil
+      expect(extended_module.instance_variable_get(:@configs).https).to be_nil
+    end
+  end
+
+  describe :configure do
+    it "sets access_key and https for extended_module" do
+      extended_module.configure do |config|
+        config.access_key = "foo123"
+        config.https = true
+      end
+      expect(extended_module.configs.access_key).to eq "foo123"
+      expect(extended_module.configs.https).to eq true
+    end
+
+    it "resets observers" do
+      subject::OBSERVERS.each do |observer|
+        expect(observer).to receive(:reset_connection).twice
+      end
+      
+      subject.configure do |config|
+        config.vat_key = "bar456"
+      end
+
+      subject.configure do |config|
+        config.vat_key = "foo123"
+      end      
+    end
+  end  
+
   describe :connection do
     subject{ Apilayer::Vat.connection }
 
