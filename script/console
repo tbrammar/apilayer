@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require "bundler"
+Bundler.require :default, :development
+file = File.expand_path("../../lib/apilayer.rb", __FILE__)
+require file
+
+puts "Loading Apilayer"
+Pry.start
