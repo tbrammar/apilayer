@@ -69,7 +69,7 @@ module Apilayer
         )
       else
         body
-      end      
+      end
     end
   end
 end
