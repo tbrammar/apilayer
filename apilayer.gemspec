@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
-  spec.name           = 'apilayer'
-  spec.version        = '2.1.0'
-  spec.authors        = ["Alex Fong"]
-  spec.email          = ["actfong@gmail.com"]
+  spec.name           = 'apilayer-ruby-3'
+  spec.version        = '1.0.0'
+  spec.authors        = ["Alex Fong, Tom Brammar"]
+  spec.email          = ["rubygems-org@premiacapital.com"]
   spec.files          = Dir["lib/apilayer.rb", 
                           "lib/apilayer/*",
                           "Gemfile",
@@ -11,18 +11,19 @@ Gem::Specification.new do |spec|
                           "README.rdoc"
                         ]
 
-  spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details.}
-  spec.description    = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details.}
-  spec.homepage       = "https://github.com/actfong/apilayer"
+  spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. Updated to support Ruby 3.}
+  spec.description    = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. Updated to support Ruby 3.}
+  spec.homepage       = "https://github.com/tbrammar/apilayer-ruby3"
   spec.licenses       = %w(MIT)
 
   spec.add_runtime_dependency 'json', '>= 2.0'
-  spec.add_runtime_dependency 'faraday', '~> 0.14'
+  spec.add_runtime_dependency 'faraday', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 12.1'
-  spec.add_development_dependency 'pry', '~> 0.11'
-  spec.add_development_dependency 'bundler', '~> 1.16'
-  spec.add_development_dependency 'rspec', '~> 3.7'
-  spec.add_development_dependency 'simplecov', '~> 0.14'
-  spec.add_development_dependency 'vcr', '~> 4.0'
-  spec.add_development_dependency 'webmock', '~> 3.4'
+  spec.add_development_dependency 'pry', '~> 0.14'
+  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'rspec', '~> 3.12'
+  spec.add_development_dependency 'simplecov', '~> 0.22'
+  spec.add_development_dependency 'vcr', '~> 6.0'
+  spec.add_development_dependency 'webmock', '~> 3.19'
+  spec.add_development_dependency 'rexml', '~> 3.2'
 end
