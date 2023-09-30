@@ -7,6 +7,9 @@ Please see https://github.com/actfong/currency_layer and https://github.com/actf
 *apilayer* provides a common-interface to configure and create connections to apilayer.net
 See http://apilayer.com for more details.
 
+=== Version 3.0
+Upgraded dependencies to run against Ruby 3.0 and above.
+
 === Version 2.0
 Removed all code related to currencylayer (Apilayer::Currency) and vatlayer (Apilayer::Vat).
 Now act as a dependency to currency_layer and vat_layer gems. 
@@ -33,7 +36,13 @@ ConnectionHelper contains all code related to configuring and creating connectio
 
 Add apilayer in your <tt>Gemfile</tt>:
 
-  gem "apilayer"
+For Ruby 3.0 and above
+
+  gem "apilayer", "~> 3.0"
+
+For < Ruby 3.0
+
+  gem "apilayer", "~> 2.0"
 
 Run the following in your console:
 
