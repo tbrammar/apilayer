@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  ruby-standard: acornsgrow/ruby-standard@3.3.0
+
 jobs:
   build:
     docker:
