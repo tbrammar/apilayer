@@ -9,13 +9,12 @@ jobs:
       - image: cimg/ruby:3.2.2-node
     steps:
       - checkout
-      - ruby/install-deps
   run_spec:
     docker:
       - image: cimg/ruby:3.2.2-node
     steps:
       - checkout
-      - ruby/install-deps
+      - run: bundle install
       - run: rspec spec --out "/tmp/test-results/rspec"/results.xml --format progress
 
 workflows:
