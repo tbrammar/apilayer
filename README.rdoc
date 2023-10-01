@@ -1,5 +1,7 @@
 == apilayer
 
+{<img src="https://dl.circleci.com/status-badge/img/gh/tbrammar/apilayer-ruby3/tree/master.svg?style=svg" alt="CircleCI" />}[https://dl.circleci.com/status-badge/redirect/gh/tbrammar/apilayer-ruby3/tree/master]
+
 With the release of version 2.0, the apilayer gem now act as a dependency for the *currency_layer* and *vat_layer* gems.
 
 Please see https://github.com/actfong/currency_layer and https://github.com/actfong/vat_layer
