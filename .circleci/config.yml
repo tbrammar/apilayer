@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - ruby/rspec-test
+      - run: rspec spec --out "/tmp/test-results/rspec"/results.xml --format progress
 
 workflows:
   build_and_test:
