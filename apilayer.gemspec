@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
                           "README.rdoc"
                         ]
 
-  spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. Updated to support Ruby 3.}
-  spec.description    = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. Updated to support Ruby 3.}
+  spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. This fork is updated to support Ruby 3.}
+  spec.description    = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. This fork is updated to support Ruby 3.}
   spec.homepage       = "https://github.com/tbrammar/apilayer-ruby3"
   spec.licenses       = %w(MIT)
 
