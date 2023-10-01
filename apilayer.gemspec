@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'vcr', '~> 6.0'
   spec.add_development_dependency 'webmock', '~> 3.19'
   spec.add_development_dependency 'rexml', '~> 3.2'
+  spec.add_development_dependency 'rspec_junit_formatter', '~> 0.6.0'
 end
