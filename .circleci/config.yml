@@ -16,10 +16,9 @@ jobs:
       - checkout
       - run: bundle install
       - run: mkdir ~/rspec
-      - run: 
-        command: rspec spec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml
+      - run: bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml
       - store_test_results:
-        path: ~/rspec
+          path: ~/rspec
 
 workflows:
   build_and_test:
