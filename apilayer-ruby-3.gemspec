@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name           = 'apilayer-ruby-3'
-  spec.version        = '1.0.0'
+  spec.version        = '1.0.1'
   spec.authors        = ["Alex Fong, Tom Brammar"]
   spec.email          = ["rubygems-org@premiacapital.com"]
   spec.files          = Dir["lib/apilayer.rb", 
