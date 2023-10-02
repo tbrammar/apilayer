@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.homepage       = "https://github.com/tbrammar/apilayer-ruby3"
   spec.licenses       = %w(MIT)
 
-  spec.add_runtime_dependency 'json', '~> 2.0'
+  spec.add_runtime_dependency 'json', '~> 2.6'
   spec.add_runtime_dependency 'faraday', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 12.1'
   spec.add_development_dependency 'pry', '~> 0.14'

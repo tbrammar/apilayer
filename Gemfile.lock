@@ -3,7 +3,7 @@ PATH
   specs:
     apilayer-ruby-3 (1.0.1)
       faraday (~> 2.0)
-      json (~> 2.0)
+      json (~> 2.6)
 
 GEM
   remote: https://rubygems.org/
