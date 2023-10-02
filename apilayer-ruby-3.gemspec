@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name           = 'apilayer-ruby-3'
-  spec.version        = '1.0.0'
+  spec.version        = '1.0.1'
   spec.authors        = ["Alex Fong, Tom Brammar"]
   spec.email          = ["rubygems-org@premiacapital.com"]
   spec.files          = Dir["lib/apilayer.rb", 
@@ -26,5 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'vcr', '~> 6.0'
   spec.add_development_dependency 'webmock', '~> 3.19'
   spec.add_development_dependency 'rexml', '~> 3.2'
-  spec.add_development_dependency 'rspec_junit_formatter', '~> 0.6.0'
 end
