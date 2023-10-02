@@ -1,14 +1,13 @@
 Gem::Specification.new do |spec|
   spec.name           = 'apilayer-ruby-3'
-  spec.version        = '1.0.1'
+  spec.version        = '1.0.2'
   spec.authors        = ["Alex Fong, Tom Brammar"]
   spec.email          = ["rubygems-org@premiacapital.com"]
   spec.files          = Dir["lib/apilayer.rb", 
                           "lib/apilayer/*",
                           "Gemfile",
                           "LICENSE",
-                          "Rakefile",
-                          "README.rdoc"
+                          "Rakefile"
                         ]
 
   spec.summary        = %q{Acts as a dependency for the currency_layer and vat_layer gems. See https://apilayer.com/ for more details. This fork is updated to support Ruby 3.}
